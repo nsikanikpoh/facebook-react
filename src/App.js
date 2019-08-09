@@ -1,25 +1,35 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import {BrowserRouter, Route, Switch} from 'react-router-dom';
+import Navbar from './components/layout/Navbar';
+import Dashboard from './components/dashboard/Dashboard';
+import Signin from './components/auth/Signin';
+import Signup from './components/auth/Signup';
+import UserList from './components/users/UserList';
+import Search from './components/users/Search';
+import PostDetails from './components/posts/PostDetails';
+import ProfileEdit from './components/profile/ProfileEdit';
+import ProfileShow from './components/profile/ProfileShow';
+import Requests from './components/requests/Requests';
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+        <div className="App">
+          <Navbar />
+          <Switch>
+              <Route exact path='/' component={Dashboard}/>
+              <Route exact path='/signin' component={Signin}/>
+              <Route exact path='/signup' component={Signup}/>
+              <Route exact path='/people' component={UserList}/>
+              <Route exact path='/search' component={Search}/>
+              <Route exact path='/requests' component={Requests}/>
+              <Route exact path='/post/:id' component={PostDetails}/>
+              <Route exact path='/profile/:id' component={ProfileShow}/>
+              <Route exact path='/profile/edit/:id' component={ProfileEdit}/>
+            </Switch>
+        </div>
+    </BrowserRouter>
   );
 }
 
