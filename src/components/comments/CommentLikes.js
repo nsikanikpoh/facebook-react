@@ -5,7 +5,7 @@ const CommentLikes = () =>{
     <>
       <div className="like-comment-buttons">
 
-      <button className="like-button"><i className="material-icons">thumb_up</i> Like</button>
+      <button className="like-button"><i className="material-icons">thumb_up</i>7 Likes</button>
       <button className="comment-button"> <i className="material-icons">comment</i> 4 comments</button>
 
       </div>

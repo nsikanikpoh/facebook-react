@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-//import { createProject } from '../../store/actions/projectActions';
+import { createComment } from '../../store/actions/postActions';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import Profilepic from '../../images/default.png'
@@ -17,9 +17,10 @@ class CreateComment extends Component {
 
   handleSubmit = (e) =>{
     e.preventDefault();
-    console.log(this.state)
-    //this.props.createProject(this.state);
-    //this.props.history.push('/');
+    this.props.createComment({content: this.state.content, post_id: this.props.post_id});
+    this.setState({
+      content: ''
+    })
   }
 
   render(){
@@ -29,10 +30,7 @@ class CreateComment extends Component {
         <form onSubmit={this.handleSubmit} className='normal white'>
            <a href='/'><img className="tac-image new-comment-image" src={Profilepic} alt="A Profile Pic"/></a>
 
-
-            <textarea  className="comment-field" placeholder="Write a comment..." rows="1" id="content" onChange={this.handleChange}></textarea>
-
-
+            <textarea  className="comment-field" value={this.state.content} placeholder="Write a comment..." rows="1" id="content" onChange={this.handleChange}></textarea>
 
             <button className="btn blue darken-4" style={{width:'100%'}}>Comment</button>
 
@@ -43,4 +41,11 @@ class CreateComment extends Component {
   }
 }
 
-export default CreateComment;
+
+const mapDispatchToProps = (dispatch) => {
+  return{
+    createComment: (comment) => dispatch(createComment(comment))
+  }
+}
+
+export default connect(null, mapDispatchToProps)(CreateComment);

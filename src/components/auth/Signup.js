@@ -46,7 +46,7 @@ class Signup extends Component {
        <form onSubmit={this.handleSubmit} className="normal white">
 
        <div className='input-field email-regist'>
-         <input type="email" id="email" placeholder="Email" autofocus="true" onChange={this.handleChange}/>
+         <input type="email" id="email" placeholder="Email" onChange={this.handleChange}/>
        </div>
 
          <div className='input-field field firstname-regist'>
@@ -68,7 +68,6 @@ class Signup extends Component {
 
          <div className='input-field actions registration-button'>
            <button className="btn blue darken-4 z-depth-0 lighten-1">Sign Up</button>
-
          </div>
 
            <div className='red-text input-field'>

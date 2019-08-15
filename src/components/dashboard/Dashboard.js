@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PostList from '../posts/PostList';
 import CreatePost from '../posts/CreatePost';
+import { getPosts } from '../../store/actions/postActions';
 import Popup from "reactjs-popup";
 import Profilepic from '../../images/default.png';
 import { Redirect } from 'react-router-dom';
@@ -9,6 +10,9 @@ import { connect } from 'react-redux';
 
 
 class Dashboard extends Component {
+ componentDidMount(){
+   this.props.getPosts();
+ }
 
   render(){
     const { auth, posts } = this.props;
@@ -23,9 +27,9 @@ class Dashboard extends Component {
         </div>
 
         <div className="col s12 m4 l7">
-        <div className="posts">
-          <CreatePost />
-          <PostList posts={posts}/>
+          <div className="posts">
+            <CreatePost/>
+            <PostList posts={posts}/>
           </div>
         </div>
 
@@ -46,4 +50,11 @@ const mapStateToProps = (state) =>{
     posts: state.post.posts
   }
 }
-export default connect(mapStateToProps)(Dashboard);
+
+const mapDispatchToProps = (dispatch) => {
+  return{
+    getPosts: () => dispatch(getPosts())
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

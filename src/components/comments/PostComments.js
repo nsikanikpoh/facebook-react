@@ -1,12 +1,23 @@
 import React from 'react';
 import CommentSummary from './CommentSummary';
 import CreateComment from './CreateComment';
-const PostComments = () =>{
+
+const PostComments = ({comments, post_id}) =>{
+
   return(
-    <div className='post-list section'>
-            <CommentSummary />
-            <CreateComment />
-   </div>
+    <>
+
+            {
+              comments && comments.map(comment => {
+                return(
+                  <span key={comment.id}>
+                    <CommentSummary comment={comment}/>
+                  </span>
+                )
+              })
+            }
+            <CreateComment post_id={post_id}/>
+   </>
   )
 }
 

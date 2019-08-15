@@ -44,7 +44,7 @@ class Signin extends Component {
          <form onSubmit={this.handleSubmit} className="normal white">
 
            <div className='input-field email-regist'>
-             <input type="email" id="email" placeholder="Email" autofocus="true" onChange={this.handleChange}/>
+             <input type="email" id="email" placeholder="Email" onChange={this.handleChange}/>
            </div>
 
            <div className='input-field password-regist'>
