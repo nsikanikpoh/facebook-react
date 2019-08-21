@@ -1,6 +1,5 @@
 import isEmpty from '../../validation/is-empty';
 
-
 const initState = {
   authError: null,
   isAuthenticated: false,
@@ -11,18 +10,20 @@ const initState = {
 const authReducer = (state = initState, action) =>{
   switch(action.type){
     case 'LOGIN_ERROR':
-      console.log('Login error')
+      console.log('Login errors')
       return{
         ...state,
         authError: action.err
       }
       case 'SET_CURRENT_USER':
       console.log('SET_CURRENT_USER auth reducer')
+      console.log(action.payload);
           return {
               ...state,
               isAuthenticated: !isEmpty(action.payload),
               user: action.payload
           }
+
       case 'SIGNUP_SUCCESS':
           console.log('SIGNUP Success')
           return{

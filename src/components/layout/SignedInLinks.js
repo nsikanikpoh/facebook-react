@@ -1,12 +1,16 @@
 import React from 'react';
-import { NavLink, Link } from 'react-router-dom'
+import { NavLink, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { signOut } from '../../store/actions/authActions';
 import Profilepic from '../../images/default.png'
 import { Redirect } from 'react-router-dom';
 
 const SignedInLinks = (props) =>{
-
+ const {request_count} = props;
+ const request_link = request_count > 0 ?  <li >
+       <a href="/requests">Friend Requests {request_count}</a>
+    </li>
+ : null
   return(
       <ul className="right">
 
@@ -15,11 +19,9 @@ const SignedInLinks = (props) =>{
          <form className="search">
                <li className="left">
                      <input id="search" type="search" required  name="search" style={{color:'white'}} placeholder="search people" />
-
                 </li>
                 <li className="right">
-
-                    <span><a style={{color:'white'}}><i className="material-icons">search</i></a></span>
+                    <span><NavLink style={{color:'white'}}><i className="material-icons">search</i></NavLink></span>
                 </li>
          </form>
 
@@ -33,9 +35,7 @@ const SignedInLinks = (props) =>{
           <NavLink to='/'>Home</NavLink>
         </li>
 
-        <li >
-          <a href="/requests">Friend Requests</a>
-        </li>
+        {request_link}
 
         <li >
           <NavLink to='/'>Edit Account</NavLink>

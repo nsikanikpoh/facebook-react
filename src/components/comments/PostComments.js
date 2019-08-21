@@ -2,7 +2,7 @@ import React from 'react';
 import CommentSummary from './CommentSummary';
 import CreateComment from './CreateComment';
 
-const PostComments = ({comments, post_id}) =>{
+const PostComments = ({comments, post_id, deleteComment}) =>{
 
   return(
     <>
@@ -11,7 +11,7 @@ const PostComments = ({comments, post_id}) =>{
               comments && comments.map(comment => {
                 return(
                   <span key={comment.id}>
-                    <CommentSummary comment={comment}/>
+                    <CommentSummary comment={comment} deleteComment={deleteComment}/>
                   </span>
                 )
               })

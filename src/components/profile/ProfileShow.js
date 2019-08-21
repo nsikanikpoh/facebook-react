@@ -1,81 +1,148 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Profilepic from '../../images/default.png';
 import PostList from '../posts/PostList';
+import { Redirect } from 'react-router-dom';
+import { editRequest, createRequest, getProfile } from '../../store/actions/postActions';
+import { connect } from 'react-redux';
 
+class ProfileShow extends Component {
 
-const ProfileShow = () =>{
-  return(
+  componentDidMount(){
+    const id = this.props.match.params.id;
+    this.props.getProfile(id);
+  }
 
-        <div className='dashboard container'>
-         <div className='row'>
+  delPost = (id) => {
+    const { posts } = this.props.profile.posts;
+    posts.filter(post => post.id !== id);
+    this.props.deletePost(id);
+ }
 
-         <div className="cover-background">
-         <div className="user-image">
-           <img size='100x100' src={Profilepic} alt="A Profile Pic"/>
-         </div>
+  render(){
 
+    const { auth, profile, user_id, user, createRequest, editRequest } = this.props;
+    const posts = profile && profile.posts;
+    const userProfile = profile && profile.profile;
 
-         <div className="cover-content">
-           <p style={{color:'white'}}>
-             Herbbart Perry
-           </p>
-           <a href="/" className="add-friend-button"><i className="material-icons" style={{color:'rgb(66, 103, 178)'}}>person_add</i> Accept Friend Request</a>
-            <a href="/" className="edit-your-profile-button"> <i className="material-icons" style={{color:'rgb(66, 103, 178)'}}>mode_edit</i> Edit Your Profile </a>
-         </div>
+    if(!auth) return <Redirect to='/signin'/>
 
-  </div>
-         <div className="user-info-left-background">
+       const editProfileButton = profile.profile.user_id == user_id ?
+       <Link className="edit-your-profile-button" onClick={() => {return <Redirect to='/profile/edit'/>} }>
+       <i className="material-icons" style={{color:'rgb(66, 103, 178)'}}>mode_edit</i>
+       Edit Your Profile </Link>
+       : null
 
-         <div className="user-info-left">
-           <p className='grey-text'>
-             <b>Date of Birth:</b>
-              14/03/1989
-             <br/>
+       const actionButton = user.friend_request_ids && user.friend_request_ids.includes(profile.profile.user_id) ?
+       <Link
+        onClick={() => {editRequest({requester_id:profile.profile.user_id})}}
+       >Accept Friend Request</Link>
+       : null
 
-             <b>Gender:</b>
-              Male
-             <br/>
+       const actionButtonAdd = user.friend_request_ids && user.friend_request_ids.includes(profile.profile.user_id)  ||
+       user.friends_ids && user.friends_ids.includes(profile.profile.user_id) ||
+       user.sent_request_ids &&  user.sent_request_ids.includes(profile.profile.user_id) ? null :
+       <Link
+        onClick={() => {createRequest({requestee_id:profile.profile.user_id})}}
+       > <i className="material-icons" style={{color:'rgb(66, 103, 178)'}}>person_add</i> Add friends</Link>
 
-             <b>City:</b>
-              Abuja
-             <br/>
+       const sentText = user.sent_request_ids &&  user.sent_request_ids.includes(profile.profile.user_id) ?
+       <Link
+       >Request Sent</Link>
+       : null
 
-             <b>About Me:</b>
-               I am God fearing and loves coding
-           </p>
-         </div>
-       </div>
-         <div className="friends-background friends">
-         <h2>Perrys friends:</h2>
-         <div className="friends-grid">
-           <div>
-               <a href="/" ><img size='100x100' src={Profilepic} alt="A Profile Pic"/></a>
+    return(
+          <div className='dashboard container'>
+           <div className='row'>
 
-               <p className="friend-name">
-                 Sly
-              </p>
+           <div className="cover-background">
+           <div className="user-image">
+             <img size='100x100' src={Profilepic} alt="A Profile Pic"/>
            </div>
 
-           <div>
-               <a href="/" ><img size='100x100' src={Profilepic} alt="A Profile Pic"/></a>
+           <div className="cover-content">
+             <p style={{color:'white'}}>
+               {userProfile.user_full_name}
+             </p>
 
-               <p className="friend-name">
-                 Parker
-              </p>
+             {actionButtonAdd}
+             {actionButton}
+            {editProfileButton}
+            {sentText}
+
            </div>
+          </div>
+           <div className="user-info-left-background">
 
+           <div className="user-info-left">
+             <p className='grey-text'>
+               <b>Date of Birth:</b>
+                {userProfile.birthday}
+               <br/>
+
+               <b>Gender:</b>
+                {userProfile.gender}
+               <br/>
+
+               <b>City:</b>
+                {userProfile.location}
+               <br/>
+
+               <b>About Me:</b>
+                 {userProfile.bio}
+             </p>
+           </div>
+         </div>
+           <div className="friends-background friends">
+           <h2>`${userProfile.user_first_name}'s` friends:</h2>
+           <div className="friends-grid">
+
+           {
+             userProfile.user_friends && userProfile.user_friends.map(friend => {
+               return(
+                 <div key={friend.id}>
+                     <Link to={'/profile/' + friend.id} ><img size='100x100' src={Profilepic} alt="A Profile Pic"/>
+
+                     <p className="friend-name">
+                       {friend.first_name} {friend.last_name}
+                    </p>
+                    </Link>
+                 </div>
+               )
+             })
+           }
+              </div>
             </div>
-          </div>
 
-          <div className="user-posts">
-            <PostList />
-          </div>
+            <div className="user-posts">
+              <PostList posts={posts} deletePost={this.delPost} user_id={user_id}/>
+            </div>
 
+           </div>
          </div>
-       </div>
 
-  )
+    )
+
+  }
+
 }
 
-export default ProfileShow;
+const mapStateToProps = (state) =>{
+  console.log(state);
+  return{
+    auth: state.auth.isAuthenticated,
+    profile: state.post.profile,
+    user: state.post.user,
+    user_id: state.auth.user.id
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return{
+    createRequest: (id) => dispatch(createRequest(id)),
+    editRequest: (id) => dispatch(editRequest(id)),
+    getProfile: (id) => dispatch(getProfile(id))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileShow);

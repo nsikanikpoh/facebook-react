@@ -1,9 +1,19 @@
-import React from 'react';
+import React, { Component } from 'react';
 import UserSummary from './UserSummary';
 import { Link } from 'react-router-dom';
+import { getUsers, getRequests, editRequest, createRequest } from '../../store/actions/postActions';
+import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 
+class UserList extends Component{
 
-const UserList = () =>{
+  componentDidMount(){
+    this.props.getUsers();
+  }
+
+ render(){
+    const { requests, user, editRequest, createRequest, auth } = this.props;
+    if(!auth) return <Redirect to='/signin'/>
   return(
     <div className='dashboard container'>
      <div className='row'>
@@ -20,9 +30,17 @@ const UserList = () =>{
         <div className="all-users">
           <div className="users-grid">
 
-              <UserSummary />
-              <UserSummary />
-              <UserSummary />
+          {
+            requests && requests.map(request => {
+              return(
+                <span key={request.id}>
+                  <UserSummary request={request} user={user} editRequest={editRequest} createRequest={createRequest} />
+                </span>
+              )
+            })
+          }
+
+
           </div>
         </div>
       </div>
@@ -37,9 +55,24 @@ const UserList = () =>{
   )
 }
 
+}
 
+const mapStateToProps = (state) =>{
+  console.log(state);
+  return{
+    auth: state.auth.isAuthenticated,
+    requests: state.post.users,
+    user: state.auth.user
+  }
+}
 
+const mapDispatchToProps = (dispatch) => {
+  return{
+    getUsers: () => dispatch(getUsers()),
+    getRequests: () => dispatch(getRequests()),
+    createRequest: (id) => dispatch(createRequest(id)),
+    editRequest: (id) => dispatch(editRequest(id)),
+  }
+}
 
-
-
-export default UserList;
+export default connect(mapStateToProps, mapDispatchToProps)(UserList);

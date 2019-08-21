@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
-import { createComment } from '../../store/actions/postActions';
+import { editComment } from '../../store/actions/postActions';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import Profilepic from '../../images/default.png'
 import { Link } from 'react-router-dom';
 
-class CreateComment extends Component {
+class EditComment extends Component {
   state = {
-    content: ''
+    content: this.props.comment.content
   }
+
   handleChange = (e) =>{
     this.setState({
       [e.target.id]: e.target.value
@@ -17,7 +18,9 @@ class CreateComment extends Component {
 
   handleSubmit = (e) =>{
     e.preventDefault();
-    this.props.createComment({content: this.state.content, post_id: this.props.post_id});
+    this.props.editComment({id:this.props.comment.id, content: this.state.content,
+      post_id:this.props.comment.post_id, user_id:this.props.comment.user_id});
+    // this.props.history.push(`/post/${this.props.comment.post_id}`);
     this.setState({
       content: ''
     })
@@ -28,11 +31,11 @@ class CreateComment extends Component {
     return(
       <>
         <form onSubmit={this.handleSubmit} className='normal white'>
-           <Link><img className="tac-image new-comment-image" src={Profilepic} alt="A Profile Pic"/></Link>
+           <Link to={'/profile' + this.props.comment.user_id}><img className="tac-image new-comment-image" src={Profilepic} alt="A Profile Pic"/></Link>
 
             <textarea  className="comment-field" value={this.state.content} placeholder="Write a comment..." rows="1" id="content" onChange={this.handleChange}></textarea>
 
-            <button className="btn blue darken-4" style={{width:'100%'}}>Comment</button>
+            <button className="btn blue darken-4" style={{width:'100%'}}>Edit Comment</button>
 
         </form>
       </>
@@ -44,8 +47,8 @@ class CreateComment extends Component {
 
 const mapDispatchToProps = (dispatch) => {
   return{
-    createComment: (comment) => dispatch(createComment(comment))
+    editComment: (comment) => dispatch(editComment(comment))
   }
 }
 
-export default connect(null, mapDispatchToProps)(CreateComment);
+export default connect(null, mapDispatchToProps)(EditComment);

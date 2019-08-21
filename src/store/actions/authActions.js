@@ -20,17 +20,21 @@ export const signIn = (credentials) => {
   }
 }
 
-export const setCurrentUser = (dispatch, getState, user) => {
+export const setCurrentUser = (dispatch, getState, user) =>{
 
-  dispatch({type: 'SET_CURRENT_USER', payload: user})
+  return(dispatch) =>{
+    dispatch({type: 'SET_CURRENT_USER', payload: user})
+  }
 
 }
 
 
-export const signOut = (dispatch, getState) => dispatch => {
+export const signOut = (dispatch) => {
     localStorage.removeItem('jwtToken');
-    dispatch(setCurrentUser({}));
-    getState().history.push('/login');
+      return(dispatch, getState) =>{
+        dispatch(setCurrentUser({}));
+        getState().history.push('/login');
+  }
 }
 
 export const signUp = (newUser) =>{

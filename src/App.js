@@ -26,7 +26,7 @@ function App() {
               <Route exact path='/requests' component={Requests}/>
               <Route exact path='/post/:id' component={PostDetails}/>
               <Route exact path='/profile/:id' component={ProfileShow}/>
-              <Route exact path='/profile/edit/:id' component={ProfileEdit}/>
+              <Route exact path='/profile/edit' component={ProfileEdit}/>
             </Switch>
         </div>
     </BrowserRouter>

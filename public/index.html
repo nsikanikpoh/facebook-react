@@ -38,5 +38,18 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+
   </body>
+
+  <script type="text/javascript">
+// to replicate focus on each specific respective comment field when clicking on their respective above comment button:
+  let commentButton = document.querySelectorAll('.comment-button');
+  let commentField = document.querySelectorAll('.comment-field');
+  commentButton.forEach(event => event.addEventListener('click', focus_function));
+  function focus_function() {
+     let index = Array.from(commentButton).indexOf(this);
+     commentField[index].focus();
+  }
+</script>
+
 </html>

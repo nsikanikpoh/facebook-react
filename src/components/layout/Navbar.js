@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 
 const Navbar = (props) =>{
    const { user } = props
-  const links = user.id ? <SignedInLinks user={ user }/> : <SignedOutLinks /> ;
+  const links = user && user.id ? <SignedInLinks user={ user } request_count={user.requests_count}/> : <SignedOutLinks /> ;
   return(
     <nav className="nav-wrapper blue darken-4">
     <div className="container">

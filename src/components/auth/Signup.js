@@ -35,9 +35,7 @@ class Signup extends Component {
            <h1 className="regist-header">Facebook Inc.</h1>
            <p className="regist-free">Already have an account ? <br/> Click to sign in with one of the following: </p>
            <div className="signin-links">
-
            </div>
-
            </div>
          </div>
          <div className='col s12 m5 offset-md1'>
@@ -74,14 +72,10 @@ class Signup extends Component {
                 { authError ? <p>{authError}</p> : null }
            </div>
 
-
        </form>
          </div >
        </div>
      </div>
-
-
-
     )
   }
 }
