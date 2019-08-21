@@ -27,26 +27,26 @@ class ProfileShow extends Component {
 
     if(!auth) return <Redirect to='/signin'/>
 
-       const editProfileButton = profile.profile.user_id == user_id ?
+       const editProfileButton = profile && profile.profile.user_id == user_id ?
        <Link className="edit-your-profile-button" onClick={() => {return <Redirect to='/profile/edit'/>} }>
        <i className="material-icons" style={{color:'rgb(66, 103, 178)'}}>mode_edit</i>
        Edit Your Profile </Link>
        : null
 
-       const actionButton = user.friend_request_ids && user.friend_request_ids.includes(profile.profile.user_id) ?
+       const actionButton = user && user.friend_request_ids && user.friend_request_ids.includes(profile.profile.user_id) ?
        <Link
         onClick={() => {editRequest({requester_id:profile.profile.user_id})}}
        >Accept Friend Request</Link>
        : null
 
-       const actionButtonAdd = user.friend_request_ids && user.friend_request_ids.includes(profile.profile.user_id)  ||
-       user.friends_ids && user.friends_ids.includes(profile.profile.user_id) ||
-       user.sent_request_ids &&  user.sent_request_ids.includes(profile.profile.user_id) ? null :
+       const actionButtonAdd = user && user.friend_request_ids && user.friend_request_ids.includes(profile.profile.user_id)  ||
+       user && user.friends_ids && user.friends_ids.includes(profile.profile.user_id) ||
+       user && user.sent_request_ids &&  user.sent_request_ids.includes(profile.profile.user_id) ? null :
        <Link
         onClick={() => {createRequest({requestee_id:profile.profile.user_id})}}
        > <i className="material-icons" style={{color:'rgb(66, 103, 178)'}}>person_add</i> Add friends</Link>
 
-       const sentText = user.sent_request_ids &&  user.sent_request_ids.includes(profile.profile.user_id) ?
+       const sentText =  user && user.sent_request_ids &&  user.sent_request_ids.includes(profile.profile.user_id) ?
        <Link
        >Request Sent</Link>
        : null
@@ -62,7 +62,7 @@ class ProfileShow extends Component {
 
            <div className="cover-content">
              <p style={{color:'white'}}>
-               {userProfile.user_full_name}
+               {userProfile && userProfile.user_full_name}
              </p>
 
              {actionButtonAdd}
@@ -77,28 +77,28 @@ class ProfileShow extends Component {
            <div className="user-info-left">
              <p className='grey-text'>
                <b>Date of Birth:</b>
-                {userProfile.birthday}
+                {userProfile && userProfile.birthday}
                <br/>
 
                <b>Gender:</b>
-                {userProfile.gender}
+                {userProfile && userProfile.gender}
                <br/>
 
                <b>City:</b>
-                {userProfile.location}
+                {userProfile && userProfile.location}
                <br/>
 
                <b>About Me:</b>
-                 {userProfile.bio}
+                 {userProfile && userProfile.bio}
              </p>
            </div>
          </div>
            <div className="friends-background friends">
-           <h2>`${userProfile.user_first_name}'s` friends:</h2>
+           <h5>{userProfile && userProfile.user_first_name + "'s'"} friends:</h5>
            <div className="friends-grid">
 
            {
-             userProfile.user_friends && userProfile.user_friends.map(friend => {
+             userProfile && userProfile.user_friends && userProfile.user_friends.map(friend => {
                return(
                  <div key={friend.id}>
                      <Link to={'/profile/' + friend.id} ><img size='100x100' src={Profilepic} alt="A Profile Pic"/>
