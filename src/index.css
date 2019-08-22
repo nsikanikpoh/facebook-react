@@ -431,9 +431,10 @@ background: rgb(66,103,178);
 
 
  .user-posts {
+   postion: relative;
    width: 52%;
    margin-left: 390px;
-   margin-top: -525px;
+   margin-top: -285px;
  }
 
 

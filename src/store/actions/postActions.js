@@ -143,6 +143,9 @@ export const getPosts = () =>{
            console.log(res);
            dispatch({type: 'GET_POSTS', posts: res.data});
            setTimeout(() => {
+                dispatch(getProfile(id));
+              }, 2000)
+           setTimeout(() => {
                 dispatch(getRequests());
               }, 2000)
          }

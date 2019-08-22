@@ -10,8 +10,10 @@ const Navbar = (props) =>{
   return(
     <nav className="nav-wrapper blue darken-4">
     <div className="container">
-       <Link to='/' className="brand-logo">Facebook</Link>
+       <Link to='/' className="brand-logo left" style={{position: "block"}} >Facebook</Link>
+
        {links}
+
     </div>
    </nav>
   )

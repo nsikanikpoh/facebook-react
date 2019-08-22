@@ -6,7 +6,7 @@ import Profilepic from '../../images/default.png'
 import { Redirect } from 'react-router-dom';
 
 const SignedInLinks = (props) =>{
- const {request_count} = props;
+ const {user, request_count} = props;
  const request_link = request_count > 0 ?  <li >
        <a href="/requests">Friend Requests {request_count}</a>
     </li>
@@ -17,8 +17,8 @@ const SignedInLinks = (props) =>{
       <li className="left">
 
          <form className="search">
-               <li className="left">
-                     <input id="search" type="search" required  name="search" style={{color:'white'}} placeholder="search people" />
+               <li style={{position:"relative"}} className="left">
+                     <input id="search" type="search" required  name="search" style={{color:'white', width: 95}} placeholder="search" />
                 </li>
                 <li className="right">
                     <span><NavLink style={{color:'white'}}><i className="material-icons">search</i></NavLink></span>
@@ -27,10 +27,13 @@ const SignedInLinks = (props) =>{
 
        </li>
         <li ><NavLink to='/people'>People</NavLink></li>
-        <li className="navbar-tac"> <img className="tac-image" src={Profilepic} alt="A Profile Pic"/></li>
-        <li >
-          <NavLink to='/'>{props.first_name}</NavLink>
+
+        <li className="navbar-tac"> <NavLink to={'/profile/' + user.id} >
+        <img className="tac-image" src={Profilepic} alt="A Profile Pic"/>
+        {user.first_name}
+          </NavLink>
         </li>
+
         <li >
           <NavLink to='/'>Home</NavLink>
         </li>
@@ -38,7 +41,7 @@ const SignedInLinks = (props) =>{
         {request_link}
 
         <li >
-          <NavLink to='/'>Edit Account</NavLink>
+          <NavLink to='/'>Edit Profile</NavLink>
         </li>
      <li><a onClick={props.signOut}>Log Out</a></li>
      </ul>
